@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glow Up</title>
+<style>
+:root{--bg:#0e0b0a;--card:#1a1512;--ink:#fbf3ec;--mut:#a89a8e;--ac:#ff5a1f;--ac2:#ffb020;--ok:#4ade80;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#fff7f0;--card:#fff;--ink:#241610;--mut:#7a6558}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Trebuchet MS",system-ui,sans-serif;padding-bottom:80px}
+h1,h2,h3{font-family:Georgia,serif;margin:.2em 0}
+.w{max-width:560px;margin:0 auto;padding:16px}
+.c{background:var(--card);border:1px solid #8882;border-radius:16px;padding:16px;margin:14px 0}.c h3{margin:0 0 6px;font-size:18px}.th{margin:10px 0}.th b{display:block}.th span{color:var(--mut);font-size:14px}
+.g{background:linear-gradient(135deg,var(--ac),var(--ac2));border-radius:20px;padding:18px;color:#200e04}
+input,select,textarea,button{font:inherit;color:var(--ink);background:transparent;border:1px solid #8884;border-radius:10px;padding:10px;width:100%;margin:4px 0}
+select option{color:#000}
+button{cursor:pointer;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#1a0d05;border:0;font-weight:700;width:auto;padding:10px 16px}
+button.s{background:#8883;color:var(--ink)}
+label{font-size:14px;color:var(--mut)}
+.r{display:flex;gap:8px}.r>*{flex:1}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;background:none;color:var(--mut);padding:8px 2px;font-size:12px}
+nav button.on{color:var(--ac)}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #8882}
+.ck input{width:22px;margin:2px 0}
+.m{color:var(--mut);font-size:14px}
+.ph{width:31%;border-radius:10px;aspect-ratio:3/4;object-fit:cover}
+.tag{display:inline-block;background:#8883;border-radius:8px;padding:2px 8px;font-size:12px;color:var(--mut)}
+.bar{height:8px;border-radius:4px;background:#8883;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}
+#sp{position:fixed;inset:0;z-index:99;background:radial-gradient(circle at 50% 60%,#3a1406,#0e0b0a 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
+#sp.out{opacity:0;pointer-events:none}
+#sp svg{width:120px;height:120px;filter:drop-shadow(0 0 28px #ff5a1f);animation:rise 1s ease-out both,flick 1.4s ease-in-out 1s infinite}
+#sp h1{color:#fbf3ec;font-size:38px;letter-spacing:6px;margin:14px 0 0;animation:fade 1s .8s both}
+#sp p{color:#ffb020;margin:4px 0;animation:fade 1s 1.2s both}
+#sp i{position:absolute;bottom:38%;width:6px;height:6px;border-radius:50%;background:#ffb020;opacity:0;animation:em 2.4s ease-out infinite}
+@keyframes rise{from{transform:translateY(40px) scale(.5);opacity:0}to{transform:none;opacity:1}}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-1.5deg)}50%{transform:scale(1.05,1.09) rotate(1.5deg)}}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes em{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--x),-220px)}}
+@media(prefers-reduced-motion:reduce){#sp *{animation:none!important}}
+</style></head><body><div id="sp" onclick="this.classList.add('out')"><i style="left:44%;--x:-30px"></i><i style="left:52%;--x:24px;animation-delay:.5s"></i><i style="left:48%;--x:-10px;animation-delay:1s"></i><i style="left:56%;--x:40px;animation-delay:1.4s"></i><b id="lg"></b><h1>GLOW UP</h1><p>Build the best version of you</p></div><div class="w" id="app"></div><nav id="nav"></nav>
+<script>
+function logo(n){return '<svg width="'+n+'" height="'+n+'" viewBox="0 0 100 100" aria-label="Glow Up"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e02a0a"/><stop offset=".55" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffc233"/></linearGradient></defs><path d="M50 4C56 22 78 34 78 60c0 20-13 34-28 34S22 80 22 60c0-12 6-20 12-28 2 8 6 12 10 12C42 30 44 16 50 4Z" fill="url(#fg)"/><path d="M50 48c3 10 14 15 14 27 0 9-6 15-14 15s-14-6-14-15c0-6 3-10 7-14 1 4 3 6 5 6-1-8 0-14 2-19Z" fill="#fff3c4"/></svg>'}
+var K='glowup1',S={user:null,logs:[],photos:[],checks:{},posts:[],premium:false,dms:{}},tab='home';
+try{var raw=localStorage.getItem(K);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){alert('Storage full: delete old photos.')}}
+var $=function(id){return document.getElementById(id)};
+var today=function(){return new Date().toISOString().slice(0,10)};
+var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var SEED=[{n:'sam_lifts',t:'Down 4kg in 8 weeks',b:'Walking 8k steps + protein at every meal. Face looks leaner already. What helped you?',c:['Sleep was my biggest change. -maya']},{n:'maya',t:'Curly hair routine',b:'Sulfate-free wash, leave-in on wet hair, no towel rubbing. Frizz gone in 3 weeks.',c:[]},{n:'dev',t:'Skin purging?',b:'Started retinol 2 nights a week. Some dryness. Should I keep going?',c:['Yes, go slow, use SPF daily. Not medical advice.']}];
+if(!S.posts.length){S.posts=SEED}
+
+function calc(u){var bmr=10*u.w+6.25*u.h-5*u.age+(u.sex==='m'?5:-161);var tdee=bmr*[1.2,1.375,1.55,1.725][u.act];
+var floor=u.sex==='m'?1500:1200,t=tdee;
+if(u.goal==='lose')t=Math.max(floor,tdee-450);if(u.goal==='gain')t=tdee+300;
+return{kcal:Math.round(t),p:Math.round(u.w*(u.goal==='lose'?2:1.8)),tdee:Math.round(tdee)}}
+
+function heightAdvice(u){var lim=u.sex==='m'?18:16;
+if(u.age<lim)return['Growth plates are likely still open.','Sleep 9-10h (growth hormone peaks in deep sleep). Eat enough protein, calcium and vitamin D. Play sports, jump and sprint. Skip "height pills": they do not work. If you are worried about growth, a doctor can check with a bone-age X-ray.'];
+if(u.age<(u.sex==='m'?21:18))return['You may have a little growth left.','Same habits: 9h sleep, enough calories and protein, sport. A doctor can tell you if your plates are closed.'];
+return['Growth has ended for almost everyone.','No safe method adds real height. You can regain up to 1cm lost to slouching: stand tall, strengthen upper back and core, stretch hip flexors. Great posture, fit and haircut add more "perceived height" than any trick. Ignore limb-lengthening hype: it is risky surgery.']}
+
+function skin(u){var b={oily:'Gel cleanser, niacinamide serum, light gel moisturizer.',dry:'Cream cleanser, hyaluronic acid, rich moisturizer.',combo:'Gentle cleanser, niacinamide on T-zone, light lotion.',sensitive:'Fragrance-free cleanser, ceramide moisturizer, add actives slowly.'}[u.skin];
+var t=u.tone>=4?' Deeper skin tones: SPF still matters, and dark marks are the main concern. Use vitamin C or azelaic acid, and avoid picking spots.':(u.tone<=2?' Fair skin burns fast: SPF 50 daily, reapply outdoors.':' SPF 30+ every morning.');return b+t}
+function hair(u){return{straight:'Wash 2-3x/week, light conditioner on ends, avoid heavy oils at the roots.',wavy:'Lightweight leave-in, air-dry or diffuse, scrunch in mousse for definition.',curly:'Sulfate-free wash, conditioner + leave-in on wet hair, detangle with fingers or a wide comb, no towel rubbing.',coily:'Moisture first: wash weekly with co-wash between, LOC method (liquid, oil, cream), protective styles, silk pillowcase, keep trims regular.'}[u.hair]}
+var FACE={oval:'Most cuts work. Try textured crop or medium length.',round:'Add height on top, tighter sides. Angular glasses.',square:'Softer texture on top; short sides suit strong jaws.',long:'Avoid too much height. Fringe or side volume balances length.',heart:'Fuller sides or fringe balance the chin; avoid slicked back tight.'};
+
+function plan(u){var gym=u.equip==='gym';var d=gym?['Push (chest, shoulders, triceps)','Pull (back, biceps)','Legs + core','Rest / 30 min walk','Upper body','Lower body + core','Rest / mobility']:['Push-ups, dips, pike push-ups','Rows (towel/bag), pull-ups, curls','Squats, lunges, planks','Rest / 30 min walk','Full body circuit x4','Glute bridges, calf raises, core','Rest / mobility'];
+return d}
+function todayWork(u){var i=(new Date().getDay()+6)%7;return plan(u)[i]}
+
+function routine(u){var c=calc(u),x=[
+['am1','Morning: cleanse, moisturize, SPF'],['am2','Drink water on waking (target 2.5L today)'],
+['hr','Hair: '+(u.hair==='coily'||u.hair==='curly'?'moisturize + protect':'style + scalp care')],
+['wk','Workout: '+todayWork(u)],['fd','Eat about '+c.kcal+' kcal, '+c.p+'g protein'],
+['ps','Posture check: 3 times today (ears over shoulders)'],['st','8,000+ steps'],
+['pm','Evening: cleanse + moisturize'+(u.age>=18?' (retinol 2-3 nights/week)':'')],['sl','Sleep by '+(u.age<18?'9:30pm (9-10h)':'11pm (7-9h)')]];return x}
+
+function render(){
+if(!S.user)return signup();
+$('nav').innerHTML=[['home','Today'],['plan','Plan'],['track','Track'],['comm','Community'],['theory','Theory'],['me','Me']].map(function(t){return '<button class="'+(tab===t[0]?'on':'')+'" onclick="tab=\''+t[0]+'\';render()">'+t[1]+'</button>'}).join('');
+var f={home:home,plan:planV,track:track,comm:comm,theory:theoryV,me:me}[tab];$('app').innerHTML=f();window.scrollTo(0,0)}
+
+function signup(){$('nav').innerHTML='';
+$('app').innerHTML='<div class="g">'+logo(48)+'<h1>Glow Up</h1><div>One routine for training, food, skin, hair and progress. Create your account to start.</div></div><div class="c"><label>Username</label><input id="un"><label>Age</label><input id="ag" type="number" min="13" max="80"><div class="r"><div><label>Sex (for calorie math)</label><select id="sx"><option value="m">Male</option><option value="f">Female</option></select></div><div><label>Equipment</label><select id="eq"><option value="home">Home</option><option value="gym">Gym</option></select></div></div><div class="r"><div><label>Height (cm)</label><input id="ht" type="number"></div><div><label>Weight (kg)</label><input id="wt" type="number"></div></div><div class="r"><div><label>Skin type</label><select id="sk"><option>oily</option><option>dry</option><option>combo</option><option>sensitive</option></select></div><div><label>Skin tone (1 fair, 6 deep)</label><select id="tn"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select></div></div><div class="r"><div><label>Hair type</label><select id="hr"><option>straight</option><option>wavy</option><option>curly</option><option>coily</option></select></div><div><label>Face shape</label><select id="fs"><option>oval</option><option>round</option><option>square</option><option>long</option><option>heart</option></select></div></div><div class="r"><div><label>Goal</label><select id="gl"><option value="lose">Lose fat</option><option value="maintain">Maintain</option><option value="gain">Build muscle</option></select></div><div><label>Activity</label><select id="ac"><option value="0">Mostly sitting</option><option value="1" selected>Light</option><option value="2">Active</option><option value="3">Very active</option></select></div></div><p class="m">Your data stays on this device. Photos are private and never shared.</p><button onclick="go()">Create account</button></div>'}
+function go(){var v=function(i){return $(i).value};var u={name:v('un').trim(),age:+v('ag'),sex:v('sx'),equip:v('eq'),h:+v('ht'),w:+v('wt'),skin:v('sk'),tone:+v('tn'),hair:v('hr'),face:v('fs'),goal:v('gl'),act:+v('ac')};
+if(!u.name||u.age<13||u.age>80||!u.h||!u.w){alert('Fill in username, age (13+), height and weight.');return}
+S.user=u;S.logs=[{d:today(),w:u.w}];save();render()}
+
+function home(){var u=S.user,r=routine(u),ck=S.checks[today()]||{},n=r.filter(function(x){return ck[x[0]]}).length,st=streak();
+return '<h2>Hey '+esc(u.name)+'</h2><div class="g"><b>'+n+'/'+r.length+' done today</b><div class="bar" style="margin-top:8px"><i style="width:'+(n/r.length*100)+'%"></i></div><div style="margin-top:6px">'+st+' day streak</div></div><div class="c">'+r.map(function(x){return '<label class="ck" style="color:var(--ink)"><input type="checkbox" '+(ck[x[0]]?'checked':'')+' onchange="tick(\''+x[0]+'\',this.checked)"><span>'+esc(x[1])+'</span></label>'}).join('')+'</div>'}
+function tick(id,v){var t=today();S.checks[t]=S.checks[t]||{};S.checks[t][id]=v;save();render()}
+function streak(){var s=0,d=new Date();for(var i=0;i<400;i++){var k=d.toISOString().slice(0,10),c=S.checks[k]||{};if(Object.keys(c).filter(function(x){return c[x]}).length>=4)s++;else if(i>0)break;else if(i===0){}d.setDate(d.getDate()-1)}return s}
+
+function planV(){var u=S.user,c=calc(u),h=heightAdvice(u),pl=plan(u),days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+return '<h2>Your plan</h2><div class="c"><h3>Workouts</h3>'+pl.map(function(p,i){return '<div><b>'+days[i]+'</b> <span class="m">'+esc(p)+'</span></div>'}).join('')+'<p class="m">3 sets of 8-12 reps, leave 1-2 reps in reserve. Add reps or weight each week.</p></div>'
++'<div class="c"><h3>Diet</h3><div><b>'+c.kcal+' kcal</b> per day, <b>'+c.p+'g protein</b> (maintenance about '+c.tdee+').</div><p class="m">'+(u.goal==='lose'?'Deficit is capped at about 450 kcal so you keep muscle and energy. Aim for 0.3-0.7kg loss per week.':u.goal==='gain'?'Small surplus for lean gains.':'Eat at maintenance.')+' Fill half your plate with veg, choose whole foods, limit sugary drinks and alcohol. Estimates only. See a doctor or dietitian for medical needs.</p></div>'
++'<div class="c"><h3>Skin</h3><p class="m">'+esc(skin(u))+'</p></div><div class="c"><h3>Hair</h3><p class="m">'+esc(hair(u))+'</p><p class="m"><b>Cut for a '+u.face+' face:</b> '+FACE[u.face]+'</p></div>'
++'<div class="c"><h3>Face and looks</h3><p class="m">What actually changes how your face looks: lower body fat, good sleep, hydration, sun protection, clear skin, tidy brows, a fitting haircut, facial hair that suits your jaw, and glasses that flatter. Chewing gum, "mewing" and jaw gadgets have weak evidence. Skip extreme methods like bone-smashing or unregulated injections.</p></div>'
++'<div class="c"><h3>Height</h3><b>'+h[0]+'</b><p class="m">'+h[1]+'</p></div>'+meals(u)+moves(u)}
+
+function track(){var u=S.user,L=S.logs,pts='',mn=Math.min.apply(0,L.map(function(l){return l.w}))-1,mx=Math.max.apply(0,L.map(function(l){return l.w}))+1;
+if(L.length>1)pts=L.map(function(l,i){return (10+i*(280/(L.length-1)))+','+(90-(l.w-mn)/(mx-mn)*80)}).join(' ');
+return '<h2>Progress</h2><div class="c"><div class="r"><input id="lw" type="number" step="0.1" placeholder="Weight kg"><input id="lm" type="number" step="0.5" placeholder="Waist cm"></div><button onclick="log()">Save today</button>'+(pts?'<svg viewBox="0 0 300 100" style="width:100%;margin-top:10px"><polyline points="'+pts+'" fill="none" stroke="var(--ac)" stroke-width="3"/></svg>':'')+'<div class="m">'+L.slice(-4).reverse().map(function(l){return l.d+': '+l.w+'kg'+(l.m?', waist '+l.m+'cm':'')}).join('<br>')+'</div></div>'
++'<div class="c"><h3>Progress photos</h3><p class="m">Private, stored on this device only. Same light, same pose, every 2 weeks.</p><select id="pt"><option>Face</option><option>Body front</option><option>Body side</option></select><input id="pf" type="file" accept="image/*" onchange="addPh(this)"><div style="display:flex;gap:2%;flex-wrap:wrap;margin-top:8px">'+S.photos.map(function(p,i){return '<div style="width:31%"><img class="ph" style="width:100%" src="'+p.src+'" onclick="if(confirm(\'Delete photo?\')){S.photos.splice('+i+',1);save();render()}"><div class="m">'+p.d.slice(5)+' '+p.t+'</div></div>'}).join('')+'</div></div>'}
+function log(){var w=+$('lw').value,m=+$('lm').value;if(!w)return;var t=today();S.logs=S.logs.filter(function(l){return l.d!==t});S.logs.push({d:t,w:w,m:m||null});S.logs.sort(function(a,b){return a.d<b.d?-1:1});save();render()}
+function addPh(el){var f=el.files[0];if(!f)return;var t=$('pt').value,r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement('canvas'),s=300/Math.max(im.width,im.height);c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);S.photos.push({d:today(),t:t,src:c.toDataURL('image/jpeg',.6)});S.photos=S.photos.slice(-12);save();render()};im.src=r.result};r.readAsDataURL(f)}
+
+function comm(){var u=S.user;
+return '<h2>Community</h2><div class="c m">Be kind. No rating or mocking anyone\'s looks. Share routines and results as text. No medical claims. This demo community shows sample posts; posts you write stay on this device until a live server is connected.</div><div class="c"><input id="pt1" placeholder="Title"><textarea id="pb" rows="3" placeholder="Share a result or ask for advice"></textarea><button onclick="post()">Post</button></div>'
++S.posts.map(function(p,i){return '<div class="c"><span class="tag">'+esc(p.n)+'</span><h3>'+esc(p.t)+'</h3><div class="m">'+esc(p.b)+'</div>'+p.c.map(function(c){return '<div class="m" style="border-left:3px solid var(--ac2);padding-left:8px;margin-top:6px">'+esc(c)+'</div>'}).join('')+'<div class="r" style="margin-top:8px"><input id="cm'+i+'" placeholder="Advice or reply"><button class="s" style="flex:0" onclick="rep('+i+')">Reply</button></div></div>'}).join('')
++'<div class="c"><h3>Members (Premium)</h3>'+(!S.premium?'<p class="m">Premium unlocks direct messages with other members.</p><button onclick="tab=\'me\';render()">See Premium</button>':u.age<18?'<p class="m">Direct messages are for members 18 and older. You can still post and reply above.</p>':['sam_lifts','maya','dev'].map(function(n){return '<div style="margin:8px 0"><b>'+n+'</b><div class="m">'+(S.dms[n]||[]).map(esc).join('<br>')+'</div><div class="r"><input id="dm_'+n+'" placeholder="Message"><button class="s" style="flex:0" onclick="dm(\''+n+'\')">Send</button></div></div>'}).join(''))+'</div>'}
+function post(){var t=$('pt1').value.trim(),b=$('pb').value.trim();if(!t||!b)return;S.posts.unshift({n:S.user.name,t:t,b:b,c:[]});save();render()}
+function rep(i){var v=$('cm'+i).value.trim();if(!v)return;S.posts[i].c.push(v+' -'+S.user.name);save();render()}
+function dm(n){var v=$('dm_'+n).value.trim();if(!v)return;S.dms[n]=(S.dms[n]||[]).concat('You: '+v);save();render()}
+
+function me(){var u=S.user;
+return '<h2>'+esc(u.name)+'</h2><div class="c m">'+u.age+' yrs, '+u.h+' cm, '+u.w+' kg, '+u.hair+' hair, '+u.skin+' skin</div><div class="g"><h3>Premium</h3><div>Direct messages with fellow members (18+ only). Demo switch, no payment is taken here.</div><button style="margin-top:8px;background:#fff;color:#333" onclick="S.premium=!S.premium;save();render()">'+(S.premium?'Premium on (tap to turn off)':'Try Premium')+'</button></div><div class="c"><button class="s" onclick="if(confirm(\'Delete account and all data?\')){S.user=null;S.logs=[];S.photos=[];S.checks={};S.premium=false;save();render()}">Delete account and data</button></div><p class="m">Glow Up gives general wellness guidance, not medical advice. Your worth is not your looks.</p>'}
+
+var TH=[['Progressive overload','Legend says Milo of Croton lifted a calf daily until it was a bull. Thomas DeLorme formalised the idea in the 1940s while rehabilitating injured soldiers: add load or reps gradually and muscle adapts.'],
+['Protein and muscle','Morton and colleagues pooled 49 trials in 2018. Gains levelled off near 1.6 g of protein per kg of body weight, which is why the plan uses about that.'],
+['Calories and energy balance','Wilbur Atwater measured food energy in the 1890s, giving us the calorie values on labels. Mifflin-St Jeor (1990) is the modern equation for daily needs and is the one used here.'],
+['Sunscreen and SPF','Franz Greiter introduced the SPF rating in 1962. UV is the main driver of skin ageing, so daily sunscreen is the highest-value skin habit.'],
+['Retinoids','Albert Kligman at the University of Pennsylvania developed tretinoin in the 1960s for acne. The FDA approved it in 1971. It remains the best-studied anti-ageing ingredient.'],
+['Skin tone scale','Thomas Fitzpatrick at Harvard created the 1-6 skin type scale in 1975 to guide UV treatment. Skincare uses it to judge burn risk and dark-mark risk.'],
+['Symmetry and averageness','Langlois and Roggman (1990) found blended average faces are rated more attractive. Later work links symmetry to perceived health. Clear skin, grooming and expression matter as much.'],
+['Golden ratio and "mewing"','The "golden ratio" face masks come from popular geometry, not solid research. "Mewing" (tongue posture) traces to British orthodontist John Mew and his orthotropics idea, which orthodontic bodies rejected for lack of evidence.'],
+['Where "looksmaxxing" comes from','The word grew in online forums in the 2010s. It mixes useful basics (fitness, skin, style) with harmful extremes such as rating people by numbers. This app keeps only the useful side.']];
+function theoryV(){return '<h2>Theory</h2><p class="m">Where the techniques came from and what the evidence says.</p><div class="c">'+TH.map(function(t){return '<div class="th"><b>'+t[0]+'</b><span>'+t[1]+'</span></div>'}).join('')+'</div>'}
+function meals(u){var v=u.goal==='gain'?'Add a snack: Greek yoghurt, banana and oats.':u.goal==='lose'?'Fill up on veg and keep sauces light.':'Eat to hunger.';
+return '<div class="c"><h3>Meal ideas</h3><div class="th"><b>Breakfast</b><span>Eggs on toast with fruit, or oats with milk, peanut butter and berries</span></div><div class="th"><b>Lunch</b><span>Chicken or tuna wrap with salad, or rice, beans and vegetables</span></div><div class="th"><b>Dinner</b><span>Fish or lean mince, potatoes or rice, two veg. Vegetarian: lentil curry or tofu stir-fry</span></div><div class="th"><b>Snacks</b><span>Yoghurt, fruit, nuts, biltong or boiled eggs</span></div><p class="m">'+v+' Halve or double portions to hit your calories.</p></div>'}
+function moves(u){var g=u.equip==='gym';var m=g?[['Push','Bench press, overhead press, incline dumbbell press, triceps pushdown'],['Pull','Barbell row, lat pulldown, face pull, biceps curl'],['Legs','Squat, Romanian deadlift, leg press, plank']]:[['Push','Push-ups, pike push-ups, chair dips, plank shoulder taps'],['Pull','Towel or backpack rows, pull-ups if you have a bar, backpack curls'],['Legs','Squats, split squats, glute bridges, calf raises, plank']];
+return '<div class="c"><h3>Exercises</h3>'+m.map(function(x){return '<div class="th"><b>'+x[0]+' day</b><span>'+x[1]+'</span></div>'}).join('')+'<p class="m">3 sets of 8-12. Stop each set 1-2 reps before failure. Add a rep or a little weight each week. Warm up first.</p></div>'}
+document.getElementById('lg').outerHTML=logo(120);render();setTimeout(function(){$('sp').classList.add('out')},2800);
+</script></body></html>
